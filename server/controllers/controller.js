@@ -160,7 +160,7 @@ allControllers.login = async (req, res) => {
   const user =
     (await User.findOne({ username })) || (await User.findOne({ email }));
   if (user == null) {
-    return res.status(404).json({ message: "False Username or Email" });
+    return res.status(404).json({ message: "Falscher Benutzername oder E-Mail" });
   }
   try {
     if (await bcrypt.compare(password, user.password)) {
@@ -177,7 +177,7 @@ allControllers.login = async (req, res) => {
       });
     } else {
       res.status(400).json({
-        message: "False Password please Repeat!",
+        message: "Falsches Passwort, bitte wiederholen!",
       });
     }
   } catch (err) {
@@ -191,7 +191,7 @@ allControllers.deleteUser = async (req, res) => {
   try {
     if (await bcrypt.compare(password, user.password)) {
       await User.findByIdAndDelete(req.id);
-      res.status(200).json({ message: "this user has been deleted" });
+      res.status(200).json({ message: "Der Benutzer wurde gelöscht" });
     } else {
       res.status(400).json({ message: "false Password please repeat !" });
     }
@@ -223,7 +223,7 @@ allControllers.updateUserInfos = async (req, res) => {
         postalCode: req.body.postalCode,
       },
     });
-    res.status(200).json({ message: "user address been updated" });
+    res.status(200).json({ message: "Benutzeradresse wurde aktualisiert" });
   } catch (error) {
     res.status(400).json({ message: err.message });
   }
@@ -234,7 +234,7 @@ allControllers.updatePassword = async (req, res) => {
   if (newPassword !== passwordConf && newPassword == undefined) {
     return res
       .status(400)
-      .json({ message: "your confirmation password failed ,please repeat" });
+      .json({ message: "Ihr Bestätigungspasswort ist fehlgeschlagen, bitte wiederholen" });
   }
   let _id = req.id;
   const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -246,10 +246,10 @@ allControllers.updatePassword = async (req, res) => {
           password: hashedPassword,
         },
       });
-      res.status(200).json({ message: "your password been changed" });
+      res.status(200).json({ message: "Dein Passwort wurde geändert" });
     } else {
       res.status(400).json({
-        message: "Not Allowed, please check your password",
+        message: "Nicht erlaubt, bitte überprüfen Sie Ihr Passwort",
       });
     }
   } catch (error) {
@@ -268,7 +268,7 @@ allControllers.forgotPassword = async (req, res) => {
     if (err || !user) {
       return res
         .status(400)
-        .json({ error: "user with this email does not exist" });
+        .json({ error: "Benutzer mit dieser E-Mail existiert nicht" });
     }
     const token = sign({ _id: user._id }, process.env.RESET_PASSWORD_KEY, {
       expiresIn: "20m",
@@ -297,7 +297,7 @@ allControllers.forgotPassword = async (req, res) => {
         return res.status(400).json({ error: "reset password link error" });
       } else {
         res.status(200).json({
-          message: "Email has been sent ,Check your Email",
+          message: "Eine E-Mail wurde gesendet, überprüfen Sie Ihre E-Mail",
         });
       }
     });
@@ -309,7 +309,7 @@ allControllers.resetPassword = async (req, res) => {
   if (newPassword !== passwordConf) {
     return res
       .status(401)
-      .json({ error: "False Password Confirmation please repeat" });
+      .json({ error: "Falsche Passwortbestätigung bitte wiederholen" });
   }
 
   if (resetLink) {
@@ -330,7 +330,7 @@ allControllers.resetPassword = async (req, res) => {
       const obj = { password: hashedPassword };
       user = _.extend(user, obj);
       user.save();
-      res.status(200).json({ message: "Your password has been changed" });
+      res.status(200).json({ message: "Ihr Passwort wurde geändert" });
     });
   } else {
     return res.status(401).json({ error: "Authentication error!!!" });

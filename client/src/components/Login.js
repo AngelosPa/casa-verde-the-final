@@ -11,8 +11,9 @@ const Login = ({ history }) => {
   const [data, setData] = useContext(DataContext);
   const [token, setToken] = useContext(AuthContext);
   const [showEye, setShowEye] = useState(false);
-  const [loginMessage, setLoginMessage] = useState("");
+  const [loginMessage, setLoginMessage] = useState("WELCOME IM CASA VERDE 🌱");
   const [rotation, setRotation] = useState(0);
+  const [msgcolor, setMsgcolor] = useState("black");
   axios.defaults.withCredentials = true;
 
   const loginUser = () => {
@@ -25,17 +26,19 @@ const Login = ({ history }) => {
         if (!res.data.token) {
           console.log(rotation);
           setRotation(110);
+          
           setLoginMessage(res.data.message);
         } else {
           setToken(res.data.token);
           setData(res.data);
           localStorage.setItem("token", res.data.token);
-          setLoginMessage("You are logged in");
+          setLoginMessage("Du bist eingeloggt");
           history.push("/");
         }
       })
       .catch((error) => {
         setRotation(110);
+        setMsgcolor("red");
         setLoginMessage(error.response.data.message);
       });
   };
@@ -46,13 +49,15 @@ const Login = ({ history }) => {
   return (
     <div onSubmit={handleSubmit} className="login-container">
     <div className="login-container">
+    <p class="speech-bubble" style={{ color: `${msgcolor}` }}><b>{loginMessage}</b></p>
       <div
         style={{ transform: `rotate(${rotation}deg)` }}
         className="kaktuscon"
       >
+      
         <Kaktus />
       </div>
-      <h5 styleName={{ color: "red" }}>{loginMessage}</h5>
+      <h5 style={{ color: "red" }}></h5>
       <input
         type="text"
         value={username}
