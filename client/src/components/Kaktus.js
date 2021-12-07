@@ -1,14 +1,15 @@
 import React from 'react'
 
-export default function Kaktus() {
+export default function Kaktus(props) {
+console.log(props.mouthrotate)
     return (
         <div class="container">
               
         <div class="ground"></div>
         <div class="pot"></div>
         <div class="cactus">
-            <div class="eye"></div>
-            <div class="mouth"></div>
+            <div class="eye" ></div>
+            <div class="mouth" style={{ transform: `rotate(-${props.mouthrotate}deg)` }}></div>
             <div class="flower">
                 <div class="petals">
                     <div class="dot"></div>
@@ -18,3 +19,4 @@ export default function Kaktus() {
     </div>
     )
 }
+// transform: rotate(-180deg);

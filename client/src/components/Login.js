@@ -14,6 +14,7 @@ const Login = ({ history }) => {
   const [loginMessage, setLoginMessage] = useState("WELCOME IM CASA VERDE 🌱");
   const [rotation, setRotation] = useState(0);
   const [msgcolor, setMsgcolor] = useState("black");
+  const [mouthrotate, setMouthrotate] = useState(0);
   axios.defaults.withCredentials = true;
 
   const loginUser = () => {
@@ -39,6 +40,7 @@ const Login = ({ history }) => {
       .catch((error) => {
         setRotation(110);
         setMsgcolor("red");
+        setMouthrotate(180);
         setLoginMessage(error.response.data.message);
       });
   };
@@ -55,7 +57,7 @@ const Login = ({ history }) => {
         className="kaktuscon"
       >
       
-        <Kaktus />
+        <Kaktus mouthrotate={mouthrotate}/>
       </div>
       <h5 style={{ color: "red" }}></h5>
       <input
